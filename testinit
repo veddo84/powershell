@@ -1,0 +1,79 @@
+class Password{
+
+     
+    [ValidateNotNullOrEmpty()]
+    [string]$word
+    [ValidateNotNullOrEmpty()]
+    [string]$wordIwandt 
+    [ValidateNotNullOrEmpty()]
+    [string]$path 
+
+    Password() 
+        # Konstruktor mit Parameter            
+        {            
+                    
+           
+    
+        } 
+
+     Password($word) 
+        # Konstruktor mit Parameter            
+        {            
+                    
+            $this.word = $word 
+            $this.wordIwandt = $this.makmagic()        
+            $this.path="Value"    
+    
+        }            
+
+
+    [string] makmagic(){ 
+        Write-Output $this.word
+        $encodePass =[System.Text.Encoding]::Unicode.GetBytes($this.word)
+        $encode = [Convert]::ToBase64String($encodePass)
+        Write-Output $encode
+        $this.wordIwandt = $encode
+        return $this.wordIwandt
+
+      
+    
+    
+    }
+
+    [string] makmagicback(){ 
+        $encodeStr = Get-Content $this.path
+        $bytesData = [System.Convert]::FromBase64String($encodeStr)
+        #Write-Output $encodeStr
+        $decodevalue = [System.Text.Encoding]::Unicode.GetString($bytesData)
+        Write-Output $decodevalue
+        return $decodevalue
+
+      
+    
+    
+    }
+
+    [string] makefile(){
+        
+        $this.wordIwandt | Out-File -FilePath $this.path #'testfile1.txt'
+
+        return "o" 
+    
+    }
+
+
+}
+
+
+$F1 = [Password]::new("Testing")
+$F1.path="C:\Users\Vedad\Desktop\classes\testfile1.txt"
+$F1.makmagic()
+$F1.makefile()
+$F1
+
+
+$F2 = [Password]::new()
+$F2.path="C:\Users\Vedad\Desktop\classes\testfile1.txt"
+$Test = $F2.makmagicback()
+Write-Output "dkljfhsalhfglwefjorejf"
+Write-Output $Test
